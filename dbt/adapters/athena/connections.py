@@ -41,8 +41,7 @@ class AthenaCredentials(Credentials):
     _ALIASES = {"catalog": "database"}
     num_retries: Optional[int] = 5
     s3_data_dir: Optional[str] = None
-    s3_data_naming: Optional[str] = "uuid"
-
+    
     @property
     def type(self) -> str:
         return "athena"

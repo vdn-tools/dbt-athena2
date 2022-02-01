@@ -77,22 +77,10 @@ class AthenaAdapter(SQLAdapter):
         """
         conn = self.connections.get_thread_connection()
         creds = conn.credentials
-        if creds.s3_data_naming == "schema_table":
-            return self.s3_schema_table_location(schema_name, table_name)
-        elif creds.s3_data_naming == "uuid":
-            return self.s3_uuid_table_location()
+        if creds.s3_data_dir is not None:
+            return creds.s3_data_dir.format(schema_name=schema_name, table_name=table_name)
         else:
             raise ValueError(f"Unknown value for s3_data_naming: {creds.s3_data_naming}")
-
-    @available
-    def has_s3_data_dir(self) -> bool:
-        """
-        Returns true if the user has specified `s3_data_dir`, and
-        we should set `external_location
-        """
-        conn = self.connections.get_thread_connection()
-        creds = conn.credentials
-        return creds.s3_data_dir is not None
 
     @available
     def clean_up_partitions(
