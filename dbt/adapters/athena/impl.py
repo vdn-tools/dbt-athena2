@@ -1,8 +1,9 @@
+from cmath import log
 from uuid import uuid4
 import agate
 import re
 import boto3
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, ProfileNotFound
 from typing import Optional
 
 from dbt.adapters.base import available
@@ -10,6 +11,7 @@ from dbt.adapters.sql import SQLAdapter
 from dbt.adapters.athena import AthenaConnectionManager
 from dbt.adapters.athena.relation import AthenaRelation
 from dbt.events import AdapterLogger
+
 logger = AdapterLogger("Athena")
 
 class AthenaAdapter(SQLAdapter):
@@ -36,6 +38,43 @@ class AthenaAdapter(SQLAdapter):
             cls, agate_table: agate.Table, col_idx: int
     ) -> str:
         return "timestamp"
+
+    
+    def get_boto3_session(self):
+        conn = self.connections.get_thread_connection()
+        creds = conn.credentials
+        try:
+            boto3_session: boto3.session.Session = boto3.session.Session(
+                region_name=creds.region_name, profile_name=creds.aws_profile_name
+            )
+        except ProfileNotFound:
+            boto3_session: boto3.session.Session = boto3.session.Session(region_name=creds.region_name)
+
+        return boto3_session
+
+    
+    def split_s3_path(self, s3_path):
+        splitter = s3_path.replace("s3://", "").split("/")
+        bucket = splitter.pop(0)
+        prefix = "/".join(splitter)
+        return bucket, prefix
+
+    def s3_path_exists(self, s3_path, s3_client):
+        bucket, prefix = self.split_s3_path(s3_path)
+        result = s3_client.list_objects(Bucket=bucket, Prefix=prefix)
+        logger.info(result)
+        return True if "Contents" in result else False
+    
+    def delete_s3_object(self, s3_path):
+        bucket, prefix = self.split_s3_path(s3_path)
+
+        boto3_session = self.get_boto3_session()
+        s3_client = boto3_session.client("s3")
+        s3_resource = boto3_session.resource("s3")
+        if self.s3_path_exists(s3_path, s3_client):
+            logger.info(f"Delete object from bucket={bucket}, prefix={prefix}")
+            resp = s3_resource.Bucket(bucket).objects.filter(Prefix=prefix + "/").delete()
+            logger.info(resp)
 
     @available
     def s3_table_prefix(self) -> str:
@@ -70,7 +109,7 @@ class AthenaAdapter(SQLAdapter):
         return f"{self.s3_table_prefix()}{schema_name}/{table_name}/"
 
     @available
-    def s3_table_location(self, schema_name: str, table_name: str) -> str:
+    def s3_table_location(self, schema_name: str, table_name: str, recreate: bool = True) -> str:
         """
         Returns either a UUID or database/table prefix for storing a table,
         depending on the value of s3_table
@@ -78,7 +117,11 @@ class AthenaAdapter(SQLAdapter):
         conn = self.connections.get_thread_connection()
         creds = conn.credentials
         if creds.s3_data_dir is not None:
-            return creds.s3_data_dir.format(schema_name=schema_name, table_name=table_name)
+            s3_path = creds.s3_data_dir.format(schema_name=schema_name, table_name=table_name)
+            if recreate:
+                self.delete_s3_object(s3_path)
+
+            return s3_path
         else:
             raise ValueError(f"Unknown value for s3_data_naming: {creds.s3_data_naming}")
 
@@ -88,10 +131,11 @@ class AthenaAdapter(SQLAdapter):
     ):
         # Look up Glue partitions & clean up
         conn = self.connections.get_thread_connection()
-        client = conn.handle
+        boto3_session = self.get_boto3_session()
 
-        glue_client = boto3.client('glue', region_name=client.region_name)
-        s3_resource = boto3.resource('s3', region_name=client.region_name)
+        client = conn.handle
+        glue_client = boto3_session.client('glue', region_name=client.region_name)
+        s3_resource = boto3_session.resource('s3', region_name=client.region_name)
         partitions = glue_client.get_partitions(
             # CatalogId='123456789012', # Need to make this configurable if it is different from default AWS Account ID
             DatabaseName=database_name,
@@ -115,7 +159,8 @@ class AthenaAdapter(SQLAdapter):
         # Look up Glue partitions & clean up
         conn = self.connections.get_thread_connection()
         client = conn.handle
-        glue_client = boto3.client('glue', region_name=client.region_name)
+        boto3_session = self.get_boto3_session()
+        glue_client = boto3_session.client('glue', region_name=client.region_name)
         try:
             table = glue_client.get_table(
                 DatabaseName=database_name,
