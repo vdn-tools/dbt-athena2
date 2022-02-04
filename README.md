@@ -156,6 +156,9 @@ Next, configure the environment variables in [dev.env](dev.env) to match your At
 make run_tests
 ```
 
+### Table naming convention
+https://docs.oracle.com/cd/E25054_01/fusionapps.1111/e16816/namingconv.htm
+https://www.linkedin.com/pulse/data-warehouse-naming-convention-kirill-andriychuk/
 ### Community
 
 * [fishtown-analytics/dbt][fishtown-analytics/dbt]

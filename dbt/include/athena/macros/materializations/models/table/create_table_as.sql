@@ -10,7 +10,7 @@
     {{ relation }}
 
     with (
-      external_location='{{ adapter.s3_table_location(relation.schema, relation.identifier, True) }}',
+      external_location='{{ adapter.s3_table_location(relation.schema, relation.identifier) }}',
       {%- if partitioned_by is not none %}
         partitioned_by=ARRAY{{ partitioned_by | tojson | replace('\"', '\'') }},
       {%- endif %}
