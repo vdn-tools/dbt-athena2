@@ -19,6 +19,7 @@ from pyathena.formatter import _DEFAULT_FORMATTERS, _escape_hive, _escape_presto
 from dbt.adapters.base import Credentials
 from dbt.contracts.connection import Connection, AdapterResponse
 from dbt.adapters.sql import SQLConnectionManager
+from dbt.adapters.athena.utils import get_boto3_session
 from dbt.exceptions import RuntimeException, FailedToConnectException
 from dbt.events import AdapterLogger
 
@@ -32,15 +33,15 @@ logger = AdapterLogger("Athena")
 
 @dataclass
 class AthenaCredentials(Credentials):
-    s3_staging_dir: str
     region_name: str
     schema: str
-    work_group: Optional[str] = None
     aws_profile_name: Optional[str] = None
-    poll_interval: float = 1.0
-    _ALIASES = {"catalog": "database"}
-    num_retries: Optional[int] = 5
+    s3_staging_dir: Optional[str] = None
+    work_group: Optional[str] = None
     s3_data_dir: Optional[str] = None
+    poll_interval: float = 1.0
+    num_retries: Optional[int] = 5
+    _ALIASES = {"catalog": "database"}
 
     @property
     def type(self) -> str:
@@ -95,9 +96,7 @@ class AthenaCursor(Cursor):
                 cache_size=cache_size,
                 cache_expiration_time=cache_expiration_time,
             )
-            query_execution = self._executor.submit(
-                self._collect_result_set, query_id
-            ).result()
+            query_execution = self._executor.submit(self._collect_result_set, query_id).result()
             if query_execution.state == AthenaQueryExecution.STATE_SUCCEEDED:
                 self.result_set = self._result_set_class(
                     self._connection,
@@ -143,9 +142,17 @@ class AthenaConnectionManager(SQLConnectionManager):
 
         try:
             creds: AthenaCredentials = connection.credentials
+            _s3_staging_dir = creds.s3_staging_dir
+
+            # If only workgroup specified, the default s3 staging dir will be taken.
+            if creds.work_group is not None and creds.s3_staging_dir is None:
+                boto3_session = get_boto3_session(creds.region_name, creds.aws_profile_name)
+                athena_client = boto3_session.client("athena")
+                resp = athena_client.get_work_group(WorkGroup=creds.work_group)
+                _s3_staging_dir = resp["WorkGroup"]["Configuration"]["ResultConfiguration"]["OutputLocation"]
 
             handle = AthenaConnection(
-                s3_staging_dir=creds.s3_staging_dir,
+                s3_staging_dir=_s3_staging_dir,
                 region_name=creds.region_name,
                 schema_name=creds.schema,
                 work_group=creds.work_group,
@@ -167,10 +174,7 @@ class AthenaConnectionManager(SQLConnectionManager):
             connection.handle = handle
 
         except Exception as e:
-            logger.debug(
-                "Got an error when attempting to open a Athena "
-                "connection: '{}'".format(e)
-            )
+            logger.debug("Got an error when attempting to open a Athena " "connection: '{}'".format(e))
             connection.handle = None
             connection.state = "fail"
 
@@ -209,18 +213,14 @@ class AthenaConnectionManager(SQLConnectionManager):
 
 class AthenaParameterFormatter(Formatter):
     def __init__(self) -> None:
-        super(AthenaParameterFormatter, self).__init__(
-            mappings=deepcopy(_DEFAULT_FORMATTERS), default=None
-        )
+        super(AthenaParameterFormatter, self).__init__(mappings=deepcopy(_DEFAULT_FORMATTERS), default=None)
 
     def format(self, operation: str, parameters: Optional[List[str]] = None) -> str:
         if not operation or not operation.strip():
             raise ProgrammingError("Query is none or empty.")
         operation = operation.strip()
 
-        if operation.upper().startswith("SELECT") or operation.upper().startswith(
-            "WITH"
-        ):
+        if operation.upper().startswith("SELECT") or operation.upper().startswith("WITH"):
             escaper = _escape_presto
         else:
             escaper = _escape_hive
@@ -240,12 +240,5 @@ class AthenaParameterFormatter(Formatter):
                         raise TypeError("{0} is not defined formatter.".format(type(v)))
                     kwargs.append(func(self, escaper, v))
             else:
-                raise ProgrammingError(
-                    "Unsupported parameter "
-                    + "(Support for list only): {0}".format(parameters)
-                )
-        return (
-            (operation % tuple(kwargs)).strip()
-            if kwargs is not None
-            else operation.strip()
-        )
+                raise ProgrammingError("Unsupported parameter " + "(Support for list only): {0}".format(parameters))
+        return (operation % tuple(kwargs)).strip() if kwargs is not None else operation.strip()
