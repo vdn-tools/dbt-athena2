@@ -67,6 +67,8 @@ seeds:
 
 - Athena limit ALTER ADD COLUMNS with data type `date`, recommend to parse it to `timestamp` or `string` during implementing the model. Details [here](https://docs.aws.amazon.com/athena/latest/ug/alter-table-add-columns.html).
 
+- Athena not accept the comment like `/*`, to ignore these auto generated comment from `dbt`, place this `query-comment: null` in `dbt_project.yml` file.
+
 ## Configuring your profile
 
 A dbt profile can be configured to run against AWS Athena using the following configuration:
