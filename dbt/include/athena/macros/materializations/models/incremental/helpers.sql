@@ -25,7 +25,7 @@
 {% macro delete_overlapping_partitions(target_relation, tmp_relation, partitioned_by) %}
   {%- set partitioned_keys = partitioned_by | tojson | replace('\"', '') | replace('[', '') | replace(']', '') -%}
   {% call statement('get_partitions', fetch_result=True) %}
-    select distinct {{partitioned_keys}} from {{ tmp_relation }};
+    select distinct {{ partitioned_keys }} from {{ tmp_relation }};
   {% endcall %}
   {%- set table = load_result('get_partitions').table -%}
   {%- set rows = table.rows -%}

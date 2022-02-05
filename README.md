@@ -73,7 +73,9 @@ _Additional information_
 * `threads` is supported
 * `database` and `catalog` can be used interchangeably
 
-### Usage notes
+## Usage notes
+### On schema change setup
+https://docs.aws.amazon.com/athena/latest/ug/alter-table-add-columns.html
 
 ### Models
 

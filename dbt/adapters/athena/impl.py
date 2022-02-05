@@ -75,10 +75,6 @@ class AthenaAdapter(SQLAdapter):
 
     @available
     def s3_table_location(self, schema_name: str, table_name: str) -> str:
-        """
-        Returns either a UUID or database/table prefix for storing a table,
-        depending on the value of s3_table
-        """
         creds = self.get_creds()
         if creds.s3_data_dir is not None:
             s3_path = creds.s3_data_dir.format(schema_name=schema_name, table_name=table_name)

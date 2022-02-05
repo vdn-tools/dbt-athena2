@@ -10,6 +10,8 @@
 
   {% set raw_strategy = config.get('incremental_strategy', default='insert_overwrite') %}
   {% set strategy = validate_get_incremental_strategy(raw_strategy) %}
+  {% set on_schema_change = incremental_validate_on_schema_change(config.get('on_schema_change'), default='ignore') %}
+
 
   {% set partitioned_by = config.get('partitioned_by', default=none) %}
   {% set target_relation = this.incorporate(type='table') %}
@@ -34,8 +36,13 @@
       {% endif %}
       {% do run_query(create_table_as(True, tmp_relation, sql)) %}
       {% do delete_overlapping_partitions(target_relation, tmp_relation, partitioned_by) %}
+
+      {# Todo: Enhance functionalities #}
+      {% do process_schema_changes(on_schema_change, tmp_relation, existing_relation) %}
+
       {% set build_sql = incremental_insert(tmp_relation, target_relation) %}
       {% do to_drop.append(tmp_relation) %}
+      
   {% else %}
       {% set tmp_relation = make_temp_relation(target_relation) %}
       {% if tmp_relation is not none %}
