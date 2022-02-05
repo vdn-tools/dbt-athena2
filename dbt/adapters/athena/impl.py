@@ -69,13 +69,17 @@ class AthenaAdapter(SQLAdapter):
     def s3_table_location(self, schema_name: str, table_name: str) -> str:
         creds = self.get_creds()
         if creds.s3_data_dir is not None:
-            s3_path = creds.s3_data_dir.format(schema_name=schema_name, table_name=table_name)
+            s3_path = creds.s3_data_dir.format(
+                schema_name=schema_name, table_name=table_name
+            )
             return s3_path
         else:
             raise ValueError("s3_data_dir is required for the profile config")
 
     @available
-    def clean_up_partitions(self, database_name: str, table_name: str, where_condition: str):
+    def clean_up_partitions(
+        self, database_name: str, table_name: str, where_condition: str
+    ):
         # Look up Glue partitions & clean up
         creds = self.get_creds()
         boto3_session = get_boto3_session(creds.region_name, creds.aws_profile_name)
@@ -137,7 +141,9 @@ class AthenaAdapter(SQLAdapter):
     @available
     def drop_relation(self, relation):
         if relation.type is None:
-            dbt.exceptions.raise_compiler_error("Tried to drop relation {}, but its type is null.".format(relation))
+            dbt.exceptions.raise_compiler_error(
+                "Tried to drop relation {}, but its type is null.".format(relation)
+            )
 
         self.cache_dropped(relation)
         self.execute_macro("drop_relation", kwargs={"relation": relation})
