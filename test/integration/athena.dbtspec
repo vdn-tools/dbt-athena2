@@ -1,9 +1,11 @@
 target:
   type: athena
   database: "{{ env_var('DBT_TEST_ATHENA_DATABASE', 'awsdatacatalog') }}"
-  schema: "{{ env_var('DBT_TEST_ATHENA_SCHEMA', 'dbt_integration_tests') }}"
-  region_name: "{{ env_var('DBT_TEST_ATHENA_REGION', 'eu-west-1') }}"
+  schema: "{{ env_var('DBT_TEST_ATHENA_SCHEMA', 'ap_itde') }}"
+  region_name: "{{ env_var('DBT_TEST_ATHENA_REGION', 'ap-southeast-1') }}"
   s3_staging_dir: "{{ env_var('DBT_TEST_ATHENA_S3_STAGING_DIR') }}"
+  s3_staging_dir: "{{ env_var('DBT_TEST_ATHENA_AWS_PROFILE') }}"
+
 sequences:
   test_dbt_empty: empty
   test_dbt_base: base
