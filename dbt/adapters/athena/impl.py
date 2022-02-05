@@ -1,6 +1,5 @@
 import agate
 import re
-import boto3
 from botocore.exceptions import ClientError
 from typing import Optional
 
@@ -64,7 +63,7 @@ class AthenaAdapter(SQLAdapter):
 
         if self.s3_path_exists(s3_path, s3_client):
             logger.info(f"Delete objects from bucket={bucket}, prefix={prefix}")
-            resp = s3_resource.Bucket(bucket).objects.filter(Prefix=prefix).delete()
+            s3_resource.Bucket(bucket).objects.filter(Prefix=prefix).delete()
 
     @available
     def s3_table_location(self, schema_name: str, table_name: str) -> str:
@@ -73,7 +72,7 @@ class AthenaAdapter(SQLAdapter):
             s3_path = creds.s3_data_dir.format(schema_name=schema_name, table_name=table_name)
             return s3_path
         else:
-            raise ValueError(f"s3_data_dir is required for the profile config")
+            raise ValueError("s3_data_dir is required for the profile config")
 
     @available
     def clean_up_partitions(self, database_name: str, table_name: str, where_condition: str):
