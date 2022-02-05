@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.4 (2022-02-05)
+### Fix
+* Correct aurthor name ([`3d153b8`](https://github.com/vdn-tools/dbt-athena2/commit/3d153b8c89697844aab1d2ef06b21c485ec0d45b))
+* Add classifier and long description ([`322077e`](https://github.com/vdn-tools/dbt-athena2/commit/322077e49ab1b7e699605d848b58806a94469e8d))
+
 ## v1.1.3 (2022-02-05)
 ### Fix
 * Differ the pypi name ([`991d55d`](https://github.com/vdn-tools/dbt-athena/commit/991d55d40ae498f00cf174674cc40f0ddba0683c))
