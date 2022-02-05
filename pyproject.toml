@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "dbt-athena"
+version = "1.0.1"
+
+[tool.semantic_release]
+version_variable = [
+    "dbt/adapters/athena/__version__.py:version",
+    "pyproject.toml:version"
+]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
