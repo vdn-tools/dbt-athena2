@@ -4,7 +4,7 @@ import ast
 import re
 
 
-project_name = "dbt-athena"
+project_name = "dbt-athena2"
 cur_dir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -12,9 +12,7 @@ def read_version():
     _version_re = re.compile(r"version\s+=\s+(.*)")
     _version_path = os.path.join(cur_dir, "dbt", "adapters", "athena", "__version__.py")
     with open(_version_path, "rb") as f:
-        version = str(
-            ast.literal_eval(_version_re.search(f.read().decode("utf-8")).group(1))
-        )
+        version = str(ast.literal_eval(_version_re.search(f.read().decode("utf-8")).group(1)))
 
     return version
 
@@ -40,8 +38,9 @@ setup(
     long_description_content_type="text/markdown",
     author="Duc Nguyen",
     author_email="vanducng.dev@gmail.com",
-    url="https://github.com/vdn-tools/dbt-athena",
+    url="https://github.com/vdn-tools/dbt-athena2",
     packages=find_namespace_packages(include=["dbt", "dbt.*"]),
     include_package_data=True,
     install_requires=read_requirements(),
+    python_requires=">=3.6",
 )

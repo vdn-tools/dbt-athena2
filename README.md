@@ -1,5 +1,5 @@
-# dbt-athena
-This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. It includes some of new support as following:
+# dbt-athena2
+This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. Its newly support listed as below:
 - Updated to new dbt-core version 1.0.x
 - Support boto3 session to take the credential from dev or prod environment
 - On schema change support for new columns added
@@ -8,8 +8,9 @@ This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena
 ## Getting started
 Within your python environment, proceed below step to initate a first project. There will be some prompts at during inital steps, refer `Configuring your profile` section below to properly set it up.
 
-```
-pip install git+https://github.com/vdn-tools/dbt-athena.git
+```bash
+# Install from source: pip install git+https://github.com/vdn-tools/dbt-athena.git
+pip install dbt-athena2
 dbt init my_dbt_project
 export DBT_PROFILES_DIR=`pwd`
 cd my_dbt_project
