@@ -35,6 +35,7 @@ class AthenaAdapter(SQLAdapter):
     def convert_datetime_type(cls, agate_table: agate.Table, col_idx: int) -> str:
         return "timestamp"
 
+    @available
     def get_creds(self):
         conn = self.connections.get_thread_connection()
         creds = conn.credentials
@@ -62,6 +63,7 @@ class AthenaAdapter(SQLAdapter):
         result = s3_client.list_objects(Bucket=bucket, Prefix=prefix)
         return True if "Contents" in result else False
 
+    @available
     def delete_s3_object(self, s3_path):
         bucket, prefix = self.split_s3_path(s3_path)
 
