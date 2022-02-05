@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.3 (2022-02-05)
+### Fix
+* Differ the pypi name ([`991d55d`](https://github.com/vdn-tools/dbt-athena/commit/991d55d40ae498f00cf174674cc40f0ddba0683c))
+
 ## v1.1.2 (2022-02-05)
 ### Fix
 * Unautherize to upload artifact ([`e246cbf`](https://github.com/vdn-tools/dbt-athena/commit/e246cbf26e8da57cc4c856194c1e2b9ed05a45d3))
