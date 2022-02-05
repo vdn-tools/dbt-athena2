@@ -1,6 +1,11 @@
 [tool.poetry]
 name = "dbt-athena"
 version = "1.0.1"
+description = "Athena adapter for dbt platform"
+authors = ["Duc Nguyen"]
+packages = [
+    { include = "adapters/athena", from = "dbt" },
+]
 
 [tool.semantic_release]
 version_variable = [
