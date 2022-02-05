@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.1 (2022-02-05)
+### Fix
+* Release compare ref branch ([`362e017`](https://github.com/vdn-tools/dbt-athena/commit/362e0177dccb83dcf8806bf08ff6fa1e0cd8efe2))
+
 ## v1.1.0 (2022-02-05)
 ### Feature
 * Handle attached default s3_staging_dir along with workgroup ([`9a5e3bd`](https://github.com/vdn-tools/dbt-athena/commit/9a5e3bdb40307be2b0ab6af2897d68351497f98e))
