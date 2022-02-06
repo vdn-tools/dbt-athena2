@@ -40,15 +40,15 @@ sum(spend_balance) spend_balance,
 sum(td_balance) td_balance,
 sum(gs_balance) gs_balance,
 cast(date_format(date_parse('{{ run_date }}', '%Y-%m-%d') - interval '1' month, '%Y%m') as int) report_month
-from {{ source('timo_report_db', 'rpt_bvb_end_day_balance_v2') }}
-where cast(working_day as date) >= date_trunc('month', cast(date_parse('{{ run_date }}', '%Y-%m-%d')  as date)-interval'2'month) + interval '25' day
-and cast(working_day as date) <= date_trunc('month', cast(date_parse('{{ run_date }}', '%Y-%m-%d')  as date)-interval'1'month) + interval '24' day
+from {{ source('analytics', 'eod_balance') }}
+where cast(working_day as date) >= date_trunc('month', cast(date_parse('{{ run_date }}', '%Y-%m-%d')  as date)-interval'2'month)
+and cast(working_day as date) < date_trunc('month', cast(date_parse('{{ run_date }}', '%Y-%m-%d')  as date)-interval'1'month)
 group by working_day
 order by working_day desc
 ```
 
 ### Seed
-Under folder seeds, place csv seed file (`c_ecom_rate.csv`) and the yaml config (`c_ecom_rate.yml`) as below example. Then run `dbt seed`
+Under folder seeds, place csv seed file ( eg. `c_ecom_rate.csv`) and the yaml config (eg. `c_ecom_rate.yml`) as below example. Then run `dbt seed`
 
 ```yaml
 version: 2
@@ -97,7 +97,7 @@ athena:
       aws_profile_name: dl-dev-process
       s3_staging_dir: s3://athena-output-bucket/data_services/
       s3_data_dir: s3://athena-data-bucket/{schema_name}/{table_name}/
-      schema: ap_accounting
+      schema: accounting
       type: athena
 ```
 

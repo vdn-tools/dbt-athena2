@@ -1,7 +1,7 @@
 target:
   type: athena
   database: "{{ env_var('DBT_TEST_ATHENA_DATABASE', 'awsdatacatalog') }}"
-  schema: "{{ env_var('DBT_TEST_ATHENA_SCHEMA', 'ap_itde') }}"
+  schema: "{{ env_var('DBT_TEST_ATHENA_SCHEMA', 'dbt-test') }}"
   region_name: "{{ env_var('DBT_TEST_ATHENA_REGION', 'ap-southeast-1') }}"
   s3_staging_dir: "{{ env_var('DBT_TEST_ATHENA_S3_STAGING_DIR') }}"
   s3_staging_dir: "{{ env_var('DBT_TEST_ATHENA_AWS_PROFILE') }}"
