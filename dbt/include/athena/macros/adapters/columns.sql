@@ -40,7 +40,8 @@
             add columns
             (
               {% for column in add_columns %}
-                  {{ column.name }} {%- if 'varchar' in column.data_type %} {{ 'string'  }}
+                  {{ column.name }} {%- if ('varchar' in column.data_type) or ('character varying' in column.data_type) %} {{ 'string'  }}
+                  {%- elif ('integer' in column.data_type) %} {{ 'int'  }}
                   {%- else %} {{ column.data_type  }}
                   {%- endif %}{{ ',' if not loop.last }}
               {% endfor %}{{ ',' if add_columns and remove_columns }}
