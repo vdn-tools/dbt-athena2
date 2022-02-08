@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.5 (2022-02-08)
+### Fix
+* Convert correct athena type ([`06535ef`](https://github.com/vdn-tools/dbt-athena2/commit/06535ef5ede7eac5c29ddfa0e22d5e1ca320bd03))
+
 ## v1.1.4 (2022-02-05)
 ### Fix
 * Correct aurthor name ([`3d153b8`](https://github.com/vdn-tools/dbt-athena2/commit/3d153b8c89697844aab1d2ef06b21c485ec0d45b))
