@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.7 (2022-02-11)
+### Fix
+* Include dependencies ([`04a57cf`](https://github.com/vdn-tools/dbt-athena2/commit/04a57cf75fe44d3461988eeeba3959d2caa447db))
+
 ## v1.1.6 (2022-02-11)
 ### Fix
 * Correct package include ([`d7b6e3a`](https://github.com/vdn-tools/dbt-athena2/commit/d7b6e3ac6ea8dce0cdbe0d0a85fe97ab368f9781))
