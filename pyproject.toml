@@ -5,7 +5,7 @@ description = "Athena adapter for dbt platform"
 authors = ["Duc Nguyen"]
 readme = "README.md"
 packages = [
-    { include = "adapters/athena", from = "dbt" },
+    { include = "dbt"},
 ]
 repository = "https://github.com/vdn-tools/dbt-athena2"
 classifiers=[
