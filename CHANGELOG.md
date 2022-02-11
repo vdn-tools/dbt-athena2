@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.6 (2022-02-11)
+### Fix
+* Correct package include ([`d7b6e3a`](https://github.com/vdn-tools/dbt-athena2/commit/d7b6e3ac6ea8dce0cdbe0d0a85fe97ab368f9781))
+
 ## v1.1.5 (2022-02-08)
 ### Fix
 * Convert correct athena type ([`06535ef`](https://github.com/vdn-tools/dbt-athena2/commit/06535ef5ede7eac5c29ddfa0e22d5e1ca320bd03))
