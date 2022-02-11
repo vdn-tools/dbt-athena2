@@ -1,23 +1,27 @@
 # dbt-athena2
-This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. Its newly support listed as below:
-- Updated to new dbt-core version 1.0.x
-- Support boto3 session to take the credential from dev or prod environment
+This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. It supports addtional capabilitis as below:
+- Run on dbt-core version 1.0.x
+- Support boto3 session to take the credential from from aws profile name
 - On schema change support for new columns added
-- Dedicated bucket for storing data on specified S3 bucket
+- Add s3 bucket for storing data instead of randomly writing on staging dir
 
-## Getting started
+## Quick started
 Within your python environment, proceed below step to initate a first project. There will be some prompts at during inital steps, refer `Configuring your profile` section below to properly set it up.
 
 ```bash
-# Install from source: pip install git+https://github.com/vdn-tools/dbt-athena.git
 pip install dbt-athena2
 dbt init my_dbt_project
 export DBT_PROFILES_DIR=`pwd`
 cd my_dbt_project
-dbt run
+dbt debug # to test connection
+dbt seed # to dump your seed data
+dbt run # to run all models
+dbt run --select model_name # to run specific model
+
+#...and more...
 ```
 
-## Advanage usage
+## Basic usage
 ### Model configuration
 Below show an example how we configure how our model be configured.
 - There are 4 supported `materialized` modes: `view`, `table`, `incremental` and `esphemeral`. Details [here](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations).
