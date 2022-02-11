@@ -19,6 +19,13 @@ classifiers=[
         "Programming Language :: Python :: 3.9",
     ]
 
+[tool.poetry.dependencies]
+python = ">=3.7.1,<4.0"
+dbt-core = "1.0.*"
+pyathena = "2.4.1"
+boto3 = "1.20.47"
+tenacity = "8.0.1"
+
 [tool.semantic_release]
 version_variable = [
     "dbt/adapters/athena/__version__.py:version",
@@ -27,4 +34,4 @@ version_variable = [
 branch = "main"
 upload_to_pypi = true
 upload_to_release = true
-build_command = "pip install poetry && poetry build"
+build_command = "pip install poetry && cat requirements.txt|xargs poetry add && poetry build"
