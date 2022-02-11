@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.8 (2022-02-11)
+### Fix
+* Handle boto3 session insted of aws profile name ([`0d70d4b`](https://github.com/vdn-tools/dbt-athena2/commit/0d70d4b2a9a8aca0aa7c154e29a4207f861bfde4))
+
 ## v1.1.7 (2022-02-11)
 ### Fix
 * Include dependencies ([`04a57cf`](https://github.com/vdn-tools/dbt-athena2/commit/04a57cf75fe44d3461988eeeba3959d2caa447db))
