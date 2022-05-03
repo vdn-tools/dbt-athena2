@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.0 (2022-05-03)
+### Feature
+* Bump to dbt-core 1.1.* ([`f5c99f4`](https://github.com/vdn-tools/dbt-athena2/commit/f5c99f4fb20fcd58e850ad6df51c36af994a3253))
+* Bump to dbt-core 1.1.* ([`7c9b28c`](https://github.com/vdn-tools/dbt-athena2/commit/7c9b28ccb904553dfd2063d16495bca86c2b9670))
+
+### Fix
+* Correct dbt-core version ([`e8f3c83`](https://github.com/vdn-tools/dbt-athena2/commit/e8f3c83844ed7283284dfc9e95b043699f559f42))
+
 ## v1.1.8 (2022-02-11)
 ### Fix
 * Handle boto3 session insted of aws profile name ([`0d70d4b`](https://github.com/vdn-tools/dbt-athena2/commit/0d70d4b2a9a8aca0aa7c154e29a4207f861bfde4))
