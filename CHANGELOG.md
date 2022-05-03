@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.2 (2022-05-03)
+### Fix
+* Update dependencies version constraint ([`decce07`](https://github.com/vdn-tools/dbt-athena2/commit/decce072a92295066769af3338249e9d28d88950))
+
+### Documentation
+* Update readme ([`84558e9`](https://github.com/vdn-tools/dbt-athena2/commit/84558e962ae73dd83eb3639e92750e72bc6884cd))
+
 ## v1.2.1 (2022-05-03)
 ### Fix
 * Add suport write compression ([`453f898`](https://github.com/vdn-tools/dbt-athena2/commit/453f898acf753f3b52c8295e067326ac99c1e3b8))
