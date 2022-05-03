@@ -2,6 +2,7 @@ import agate
 import re
 from botocore.exceptions import ClientError
 from typing import Optional
+from threading import Lock
 
 from dbt.adapters.base import available
 from dbt.adapters.sql import SQLAdapter
@@ -12,6 +13,7 @@ from dbt.events import AdapterLogger
 import dbt.exceptions
 
 logger = AdapterLogger("Athena")
+boto3_client_lock = Lock()
 
 
 class AthenaAdapter(SQLAdapter):
@@ -84,7 +86,9 @@ class AthenaAdapter(SQLAdapter):
         creds = self.get_creds()
         boto3_session = get_boto3_session(creds.region_name, creds.aws_profile_name)
 
-        glue_client = boto3_session.client("glue")
+        with boto3_client_lock:
+            glue_client = boto3_session.client("glue")
+
         s3_resource = boto3_session.resource("s3")
         partitions = glue_client.get_partitions(
             # CatalogId='123456789012', # Need to make this configurable if it is different from default AWS Account ID
@@ -112,7 +116,9 @@ class AthenaAdapter(SQLAdapter):
         creds = self.get_creds()
         boto3_session = get_boto3_session(creds.region_name, creds.aws_profile_name)
 
-        glue_client = boto3_session.client("glue")
+        with boto3_client_lock:
+            glue_client = boto3_session.client("glue")
+
         try:
             table = glue_client.get_table(DatabaseName=database_name, Name=table_name)
         except ClientError as e:

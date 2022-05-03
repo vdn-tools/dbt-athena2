@@ -147,9 +147,7 @@ class AthenaConnectionManager(SQLConnectionManager):
             _s3_staging_dir = creds.s3_staging_dir
 
             # If only workgroup specified, the default s3 staging dir will be taken.
-            boto3_session = get_boto3_session(
-                creds.region_name, creds.aws_profile_name
-            )
+            boto3_session = get_boto3_session(creds.region_name, creds.aws_profile_name)
             if creds.work_group is not None and creds.s3_staging_dir is None:
                 athena_client = boto3_session.client("athena")
                 resp = athena_client.get_work_group(WorkGroup=creds.work_group)
