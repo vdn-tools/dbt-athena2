@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.1 (2022-05-03)
+### Fix
+* Add suport write compression ([`453f898`](https://github.com/vdn-tools/dbt-athena2/commit/453f898acf753f3b52c8295e067326ac99c1e3b8))
+
 ## v1.2.0 (2022-05-03)
 ### Feature
 * Bump to dbt-core 1.1.* ([`f5c99f4`](https://github.com/vdn-tools/dbt-athena2/commit/f5c99f4fb20fcd58e850ad6df51c36af994a3253))
