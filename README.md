@@ -1,6 +1,6 @@
 # dbt-athena2
-This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. It supports addtional capabilitis as below:
-- Run on dbt-core version 1.0.x
+This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. It supports addtional capabilities as below:
+- Run on dbt-core version 1.1.x
 - Support boto3 session to take the credential from from aws profile name
 - On schema change support for new columns added
 - Add s3 bucket for storing data instead of randomly writing on staging dir
