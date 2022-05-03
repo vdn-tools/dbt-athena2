@@ -1,4 +1,4 @@
 dbt-core==1.1.*
-pyathena==2.4.1
+pyathena==2.5.2
 boto3==1.20.47
 tenacity==8.0.1
