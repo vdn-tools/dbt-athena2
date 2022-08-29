@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.3 (2022-08-29)
+### Fix
+* **seed:** Support external table for seed ([`f0edd4e`](https://github.com/vdn-tools/dbt-athena2/commit/f0edd4e5753cba23ccf0d4f1a536827d54afdea0))
+
 ## v1.2.2 (2022-05-03)
 ### Fix
 * Update dependencies version constraint ([`decce07`](https://github.com/vdn-tools/dbt-athena2/commit/decce072a92295066769af3338249e9d28d88950))
