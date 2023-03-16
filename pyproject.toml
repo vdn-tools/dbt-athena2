@@ -34,4 +34,4 @@ version_variable = [
 branch = "main"
 upload_to_pypi = true
 upload_to_release = true
-build_command = "pip install poetry && cat requirements.txt|xargs poetry add && poetry build"
+build_command = "pip install poetry && poetry config installer.modern-installation false && cat requirements.txt|xargs poetry add && poetry build"
