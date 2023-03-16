@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.0 (2023-03-16)
+### Feature
+* Bump version and add CI batch ([`2fadc1f`](https://github.com/vdn-tools/dbt-athena2/commit/2fadc1ffc0924cd76f97617ae601759cb1d0450f))
+
 ## v1.2.5 (2023-03-16)
 ### Fix
 * **ci:** There is no item named 'PyAthena-2.5.2.dist-info/WHEEL' in the archiv ([`61b1544`](https://github.com/vdn-tools/dbt-athena2/commit/61b1544c9b6476c191a5cf56ca15800105279b80))
