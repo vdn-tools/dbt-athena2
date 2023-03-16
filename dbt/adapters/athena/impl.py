@@ -91,12 +91,11 @@ class AthenaAdapter(SQLAdapter):
 
         s3_resource = boto3_session.resource("s3")
         paginator = glue_client.get_paginator("get_partitions")
-        partition_params = {
-            "DatabaseName": database_name,
-            "TableName": table_name,
-            "Expression": where_condition,
-        }
-        partition_pg = paginator.paginate(**partition_params)
+        partition_pg = paginator.paginate(
+            DatabaseName=database_name,
+            TableName=table_name,
+            Expression=where_condition,
+        )
         partitions = partition_pg.build_full_result().get("Partitions")
         p = re.compile("s3://([^/]*)/(.*)")
         for partition in partitions["Partitions"]:
