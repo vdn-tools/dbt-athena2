@@ -97,7 +97,7 @@ class AthenaAdapter(SQLAdapter):
             TableName=table_name,
             Expression=where_condition,
         )
-        partitions = partition_pg.build_full_result().get("Partitions")
+        partitions = partition_pg.build_full_result()
         
         p = re.compile("s3://([^/]*)/(.*)")
         for partition in partitions["Partitions"]:
