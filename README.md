@@ -1,4 +1,8 @@
 # dbt-athena2
+
+[![CI](https://github.com/vdn-tools/dbt-athena2/actions/workflows/ci.yml/badge.svg)](https://github.com/vdn-tools/dbt-athena2/actions/workflows/ci.yml)
+
+
 This is a adapter leveraged from [this repo](https://github.com/Tomme/dbt-athena) to better serve our custom needs. It supports addtional capabilities as below:
 - Run on dbt-core version 1.1.x
 - Support boto3 session to take the credential from from aws profile name
